@@ -12,27 +12,25 @@ def censor_text(text, phrases, limit=0, del_near=0, letters="ABCDEFGHIJKLMNOPQRS
     point = [i for i in noletter_inds if i > first_letter][0]
     word_positions.append(first_letter)
     words.append(text[first_letter:point].lower())
-      
+  
   # Censor words
   censor_words = set()
   phrases_lists = [phrase.split() for phrase in phrases]
   check = 0
-  num_position = 0
-  while num_position < len(words):
+  for num_position in range(len(words)):
     for phrase_list in phrases_lists:
       if words[num_position:num_position+len(phrase_list)] == phrase_list:
         if check >= limit:          
           censor_words.update(range(num_position - del_near, num_position + len(phrase_list) + del_near))
         check += 1
         break
-    num_position += 1
-
+  
   # Censoring full text
   for num_position in [i for i in censor_words if 0 <= i < len(words)]:
     first_letter = word_positions[num_position]
     length = len(words[num_position])
     text = text[:first_letter]+"X"*length+text[first_letter+length:]
-      
+  
   return text[:-1]
 
 email_one = open("email_one.txt", "r").read()
