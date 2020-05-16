@@ -1,5 +1,5 @@
 def censor_text(text, phrases, limit=0, del_near=0,
-                letters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'"):
+                letters="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-"):
 
   # Words and word positions
   words = []
