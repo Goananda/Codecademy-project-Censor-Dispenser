@@ -1,14 +1,14 @@
 import re
-import itertools
+from itertools import chain
 
 def censor(text, censor_list, limit=0, near=0):
 
-  re_word = lambda word: rf"(?i)([\w'-]*[^\w'-]*){{{near}}}\b{word}\b([^\w'-]*[\w'-]*){{{near}}}"
-  chain = itertools.chain.from_iterable([re.finditer(re_word(word), text) for word in censor_list])
-  for link in sorted(chain, key=lambda x: x.start())[limit:]:
-    text = text[:link.start()] + re.sub(r"[\w'-]", "X", link.group()) + text[link.end():]
+    re_word = lambda word: rf"(?i)([\w'-]*[^\w'-]*){{{near}}}\b{word}\b([^\w'-]*[\w'-]*){{{near}}}"
+    links = chain(*[re.finditer(re_word(word), text) for word in censor_list])
+    for link in sorted(links, key=lambda x: x.start())[limit:]:
+        text = text[:link.start()] + re.sub(r"[\w'-]", "X", link.group()) + text[link.end():]
 
-  return text
+    return text
 
 email_one = open("email_one.txt", "r").read()
 email_two = open("email_two.txt", "r").read()
